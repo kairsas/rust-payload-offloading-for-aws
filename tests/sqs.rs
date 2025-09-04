@@ -98,8 +98,7 @@ mod sqs_it {
             &raw_message
                 .message_attributes
                 .unwrap()
-                .get(OFFLOADED_MARKER_ATTRIBUTE)
-                .is_some(),
+                .contains_key(OFFLOADED_MARKER_ATTRIBUTE),
             "Offload marker attribute is empty"
         );
 

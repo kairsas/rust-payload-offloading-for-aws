@@ -210,8 +210,7 @@ fn put_offloaded_content_marker_attribute(
             .build()
             .map_err(|e| {
                 OffloadInterceptorError::FailedToRewriteContents(format!(
-                    "Error while building sqs message attributes {}",
-                    e
+                    "Error while building sqs message attributes {e}"
                 ))
             })?,
     );
@@ -328,7 +327,7 @@ mod tests {
         );
 
         let sns_config = SnsConfig::new(
-            &mock_aws_endpoint_config(&base_endpoint_url, "sns")
+            &mock_aws_endpoint_config(base_endpoint_url, "sns")
                 .credentials_provider(SnsCredentials::for_tests())
                 .load()
                 .await,
@@ -358,7 +357,8 @@ mod tests {
                 info!("SNS Body: {:?}", intercepted_body);
 
 
-                assert!(intercepted_body.contains(&expected_body_fragment), "Body does not contain expected fragment: \nbody=\"{}\", \nexpected=\"{}\"", intercepted_body, expected_body_fragment);
+                assert!(intercepted_body.contains(&expected_body_fragment),
+                        "Body does not contain expected fragment: \nbody=\"{intercepted_body}\", \nexpected=\"{expected_body_fragment}\"");
 
                 ResponseTemplate::new(200).set_body_raw("<PublishBatchResponse><PublishBatchResult></PublishBatchResult></PublishBatchResponse>", "text/xml")
             }).expect(1)
@@ -381,9 +381,7 @@ mod tests {
 
                 assert!(
                     intercepted_body.contains(&expected_body_fragment),
-                    "Body does not contain expected fragment: \nbody=\"{}\", \nexpected=\"{}\"",
-                    intercepted_body,
-                    expected_body_fragment
+                    "Body does not contain expected fragment: \nbody=\"{intercepted_body}\", \nexpected=\"{expected_body_fragment}\""
                 );
 
                 ResponseTemplate::new(200).set_body_raw(
@@ -426,8 +424,7 @@ mod tests {
 
     fn offloaded_payload(bucket_name: &str, bucket_key: &str) -> String {
         let msg = format!(
-            r#"["software.amazon.payloadoffloading.PayloadS3Pointer",{{"s3BucketName": "{}","s3Key": "{}"}}]"#,
-            bucket_name, bucket_key
+            r#"["software.amazon.payloadoffloading.PayloadS3Pointer",{{"s3BucketName": "{bucket_name}","s3Key": "{bucket_key}"}}]"#
         );
         format!(
             "{}{}",
@@ -438,8 +435,7 @@ mod tests {
 
     fn batch_offloaded_payload(bucket_name: &str, bucket_key: &str) -> String {
         let msg = format!(
-            r#"["software.amazon.payloadoffloading.PayloadS3Pointer",{{"s3BucketName": "{}","s3Key": "{}"}}]"#,
-            bucket_name, bucket_key
+            r#"["software.amazon.payloadoffloading.PayloadS3Pointer",{{"s3BucketName": "{bucket_name}","s3Key": "{bucket_key}"}}]"#
         );
         format!(
             "{}{}",

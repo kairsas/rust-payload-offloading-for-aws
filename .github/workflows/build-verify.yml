@@ -105,4 +105,4 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          args: --all-features
+          args: --all-features --all-targets

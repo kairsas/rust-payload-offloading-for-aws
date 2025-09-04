@@ -263,8 +263,7 @@ fn put_offloaded_content_marker_attribute(
             .build()
             .map_err(|e| {
                 OffloadInterceptorError::FailedToRewriteContents(format!(
-                    "Error while building sqs message attributes {}",
-                    e
+                    "Error while building sqs message attributes {e}"
                 ))
             })?,
     );
@@ -368,9 +367,8 @@ mod tests {
     fn offloaded_payload(bucket_name: &str, bucket_key: &str) -> String {
         format!(
             "[\\\"software.amazon.payloadoffloading.PayloadS3Pointer\\\",\
-            {{\\\"s3BucketName\\\": \\\"{}\\\",\\\"s3Key\\\": \\\"{}\\\"}}]\",\
-            \"MessageAttributes\":{{\"ExtendedPayloadSize\"",
-            bucket_name, bucket_key
+            {{\\\"s3BucketName\\\": \\\"{bucket_name}\\\",\\\"s3Key\\\": \\\"{bucket_key}\\\"}}]\",\
+            \"MessageAttributes\":{{\"ExtendedPayloadSize\""
         )
     }
 
@@ -388,7 +386,7 @@ mod tests {
         );
 
         let config = Config::new(
-            &mock_aws_endpoint_config(&base_endpoint_url, "sqs")
+            &mock_aws_endpoint_config(base_endpoint_url, "sqs")
                 .credentials_provider(SqsCredentials::for_tests())
                 .load()
                 .await,
@@ -420,9 +418,7 @@ mod tests {
 
                 assert!(
                     intercepted_body.contains(&expected_body_fragment),
-                    "Body does not contain expected fragment: \nbody=\"{}\", \nexpected=\"{}\"",
-                    intercepted_body,
-                    expected_body_fragment
+                    "Body does not contain expected fragment: \nbody=\"{intercepted_body}\", \nexpected=\"{expected_body_fragment}\""
                 );
 
                 ResponseTemplate::new(200).set_body_raw("{}", "application/json")
@@ -451,9 +447,7 @@ mod tests {
 
                 assert!(
                     intercepted_body.contains(&expected_body_fragment),
-                    "Body does not contain expected fragment: \nbody=\"{}\", \nexpected=\"{}\"",
-                    intercepted_body,
-                    expected_body_fragment
+                    "Body does not contain expected fragment: \nbody=\"{intercepted_body}\", \nexpected=\"{expected_body_fragment}\""
                 );
 
                 ResponseTemplate::new(200).set_body_raw("{}", "application/json")
