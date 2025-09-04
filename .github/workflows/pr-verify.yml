@@ -21,6 +21,10 @@ jobs:
     name: PR convention & autolabel
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      actions: read
+      checks: write
     steps:
       - name: PR Conventional Commit Validation
         uses: ytanikin/pr-conventional-commits@1.4.1
