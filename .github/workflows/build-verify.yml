@@ -101,3 +101,5 @@ jobs:
         with:
           toolchain: ${{ matrix.toolchain }}
           components: clippy
+      - name: Clippy check
+        run: cargo clippy --all-features --all-targets
