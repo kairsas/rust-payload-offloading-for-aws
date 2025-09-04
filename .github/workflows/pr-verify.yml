@@ -20,7 +20,7 @@ jobs:
       - name: PR Conventional Commit Validation
         uses: ytanikin/pr-conventional-commits@1.4.1
         with:
-          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           task_types: '["feat","fix","docs","test","ci","refactor","perf","chore","revert"]'
           custom_labels: '{"feat": "feature", "docs": "documentation", "ci": "CI/CD"}'
           add_scope_label: true
