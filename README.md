@@ -27,7 +27,7 @@ rust-payload-offloading-for-aws = { git = "https://github.com/kairsas/payload-of
 
 Setup AWS SDK client:
 ```rust
-use rust_payload_offloading_for_aws::offload;
+use payload_offloading_for_aws::offload;
 
 let aws_config = aws_config::defaults(aws_config::BehaviorVersion::latest())
     .load()

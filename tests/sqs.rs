@@ -6,7 +6,7 @@ mod localstack;
 #[cfg(all(feature = "sqs", feature = "it"))]
 mod sqs_it {
     use ctor::ctor;
-    use rust_payload_offloading_for_aws::offload::{
+    use payload_offloading_for_aws::offload::{
         offloading::OFFLOADED_MARKER_ATTRIBUTE, sqs::offloading_client,
     };
     use tracing::info;
