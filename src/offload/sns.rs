@@ -119,7 +119,7 @@ fn try_offload_sns_publish_batch_input<Idp: IdProvider>(
     let any_offload_candidates = original_input
         .publish_batch_request_entries()
         .iter()
-        .any(|e| (e.message().len() > max_body_size));
+        .any(|e| e.message().len() > max_body_size);
 
     if !any_offload_candidates {
         return Ok(None);

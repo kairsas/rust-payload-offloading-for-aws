@@ -155,7 +155,7 @@ fn try_offload_sqs_send_message_batch_input<Idp: IdProvider>(
     let any_offload_candidates = original_input
         .entries()
         .iter()
-        .any(|e| (e.message_body().len() > max_body_size));
+        .any(|e| e.message_body().len() > max_body_size);
 
     if !any_offload_candidates {
         return Ok(None);
