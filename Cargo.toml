@@ -2,7 +2,7 @@
 name = "rust-payload-offloading-for-aws"
 version = "0.1.1"
 edition = "2021"
-rust-version = "1.84"
+rust-version = "1.85.1"
 
 [features]
 default = []
