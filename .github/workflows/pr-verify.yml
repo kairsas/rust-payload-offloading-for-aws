@@ -11,20 +11,12 @@ concurrency:
   group: pr-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  actions: read
-  checks: write
-
 jobs:
   prlint:
     name: PR convention & autolabel
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    permissions:
-      contents: read
-      actions: read
-      checks: write
+    permissions: write-all
     steps:
       - name: PR Conventional Commit Validation
         uses: ytanikin/pr-conventional-commits@1.4.1
