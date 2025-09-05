@@ -20,7 +20,9 @@ pub(crate) fn try_offload_body_blocking<Idp: IdProvider>(
 ) -> Result<Option<String>, OffloadInterceptorError> {
     let original_body_len = original_body.len();
     if original_body_len > max_body_size {
-        let bucket_key = id_provider.generate();
+        let bucket_key = id_provider
+            .generate()
+            .map_err(OffloadInterceptorError::FailedToGenerateS3Key)?;
         let put_obj_output = executor::block_on(async {
             let bucket_body =
                 aws_sdk_s3::primitives::ByteStream::from(original_body.as_bytes().to_vec());

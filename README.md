@@ -1,4 +1,4 @@
-# payload-offloading-rust-common-lib-for-aws
+# rust-payload-offloading-for-aws
 
 Large Payload offloading to S3, compatible with existing java libs.
 
@@ -22,7 +22,7 @@ It's compatible with common offloading Java lib: https://github.com/awslabs/payl
 
 Add dependency to Cargo.toml:
 ```toml
-rust-payload-offloading-for-aws = { git = "https://github.com/kairsas/payload-offloading-rust-common-lib-for-aws.git", features = ["sns"] }
+rust-payload-offloading-for-aws = { git = "https://github.com/kairsas/rust-payload-offloading-for-aws.git", features = ["sns"] }
 ```
 
 Setup AWS SDK client:

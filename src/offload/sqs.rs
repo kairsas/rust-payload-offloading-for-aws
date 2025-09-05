@@ -94,7 +94,11 @@ impl<Idp: IdProvider + Sync + Send + std::fmt::Debug> Intercept for S3OffloadInt
                     return Ok(());
                 }
 
-                for m in original_output.messages.as_mut().unwrap() {
+                for m in original_output.messages.as_mut().ok_or(Box::new(
+                    OffloadInterceptorError::DeserialisationError(
+                        "unable to retrieve messages".to_owned(),
+                    ),
+                ))? {
                     if let Some(orig_body) = m.body.as_ref() {
                         let downloaded_body_res = try_downloading_body(&self.s3_client, orig_body);
                         match downloaded_body_res {

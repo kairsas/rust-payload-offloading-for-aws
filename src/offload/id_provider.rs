@@ -3,7 +3,7 @@ use std::sync::Mutex;
 use uuid::Uuid;
 
 pub trait IdProvider {
-    fn generate(&self) -> String;
+    fn generate(&self) -> Result<String, String>;
 }
 
 #[derive(Debug)]
@@ -20,16 +20,19 @@ impl FixedIdsProvider {
 }
 
 impl IdProvider for FixedIdsProvider {
-    fn generate(&self) -> String {
-        let mut locked = self.ids.lock().expect("lock ids");
+    fn generate(&self) -> Result<String, String> {
+        let mut locked = self
+            .ids
+            .lock()
+            .map_err(|e| format!("lock ids failed: {e}"))?;
 
         if !locked.is_empty() {
             // Act as an infinite circular buffer
             let taken = locked.remove(0);
             locked.push(taken.clone());
-            taken
+            Ok(taken)
         } else {
-            panic!("FixedIdsProvider was exhausted")
+            Err("FixedIdsProvider was exhausted".to_owned())
         }
     }
 }
@@ -38,7 +41,7 @@ impl IdProvider for FixedIdsProvider {
 pub struct RandomUuidProvider {}
 
 impl IdProvider for RandomUuidProvider {
-    fn generate(&self) -> String {
-        Uuid::new_v4().to_string()
+    fn generate(&self) -> Result<String, String> {
+        Ok(Uuid::new_v4().to_string())
     }
 }
