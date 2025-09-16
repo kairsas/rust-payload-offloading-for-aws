@@ -13,16 +13,16 @@ When sending / receiving on sns/sqs, large message payloads will offload/downloa
     }
 ]
 ```
-It's compatible with common offloading Java lib: https://github.com/awslabs/payload-offloading-java-common-lib-for-aws/, which is used by sqs & sns Java libs:
+It's compatible with [common offloading Java lib](https://github.com/awslabs/payload-offloading-java-common-lib-for-aws/), which is used by sqs & sns Java libs:
 
-* https://github.com/awslabs/amazon-sqs-java-extended-client-lib
-* https://github.com/awslabs/amazon-sns-java-extended-client-lib
+* [amazon-sqs-java-extended-client-lib](https://github.com/awslabs/amazon-sqs-java-extended-client-lib)
+* [amazon-sns-java-extended-client-lib](https://github.com/awslabs/amazon-sns-java-extended-client-lib)
 
 ### Usage
 
 Add dependency to Cargo.toml:
 ```toml
-rust-payload-offloading-for-aws = { git = "https://github.com/kairsas/rust-payload-offloading-for-aws.git", features = ["sns"] }
+rust-payload-offloading-for-aws = { version - "0.1", features = ["sns"] }
 ```
 
 Setup AWS SDK client:
@@ -84,8 +84,7 @@ let res = offload::sqs::try_downloading_body(s3_client, payload)?
 
 ### Additional info & references
 
-AWS SDK Interceptors info:
-  https://github.com/awslabs/aws-sdk-rust/discussions/853
+[AWS SDK Interceptors discussion](https://github.com/awslabs/aws-sdk-rust/discussions/853)
 
 Useful AWS SDK interceptor examples:
   * [Replaying body](https://github.com/awslabs/aws-sdk-rust/blob/505dab66bf0801ca743212678d47d6490d2beba9/sdk/aws-smithy-runtime/src/client/http/test_util/dvr/replay.rs#L338)
