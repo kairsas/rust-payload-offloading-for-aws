@@ -113,6 +113,4 @@ async fn download_offloaded_payload_explicitly() -> Result<(), String> {
 
 Useful AWS SDK interceptor examples:
   * [Replaying body](https://github.com/awslabs/aws-sdk-rust/blob/505dab66bf0801ca743212678d47d6490d2beba9/sdk/aws-smithy-runtime/src/client/http/test_util/dvr/replay.rs#L338)
-
-
   * [Compressing body](https://github.com/awslabs/aws-sdk-rust/blob/505dab66bf0801ca743212678d47d6490d2beba9/sdk/cloudwatch/src/client_request_compression.rs#L138)
