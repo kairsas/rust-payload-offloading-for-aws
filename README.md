@@ -73,7 +73,7 @@ let r = sqs_offloading_client
 
 Alternatively you can download offloaded body manually like this:
 ```rust
-use rust_payload_offloading_for_aws::offload;
+use payload_offloading_for_aws::offload;
 
 let payload = "...";
 
