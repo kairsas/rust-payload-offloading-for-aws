@@ -9,7 +9,7 @@ When sending / receiving on sns/sqs, large message payloads will offload/downloa
     "software.amazon.payloadoffloading.PayloadS3Pointer",
     {
         "s3BucketName": "offloading-bucket",
-        "s3Key": "1a422d25-b38d-4801-b239-49689156f33f"
+        "s3Key": "9cc30888-0e2e-40da-b594-c9ca2cd58722"
     }
 ]
 ```
@@ -25,61 +25,86 @@ Add dependency to Cargo.toml:
 rust-payload-offloading-for-aws = { version - "0.1", features = ["sns"] }
 ```
 
-Setup AWS SDK client:
+Setup AWS SDK interceptors and use it as usual:
 ```rust
 use payload_offloading_for_aws::offload;
+use aws_sdk_sns::{config::{Config as SnsConfig}};
 
-let aws_config = aws_config::defaults(aws_config::BehaviorVersion::latest())
-    .load()
-    .await;
+async fn send_sns_and_receive_sqs() {
+    let aws_config = aws_config::defaults(aws_config::BehaviorVersion::latest())
+        .load()
+        .await;
 
-let sns_s3_offload_interceptor = offload::sns::S3OffloadInterceptor::new(
-    &aws_config,
-    RandomUuidProvider::default(), // bucket key generator
-    "my-bucket".to_owned(), // offloading bucket
-    255000, // max non-offload body size
-);
+    let sns_s3_offload_interceptor = offload::sns::S3OffloadInterceptor::new(
+        &aws_config,
+        offload::id_provider::RandomUuidProvider::default(), // bucket key generator
+        "my-bucket".to_owned(), // offloading bucket
+        255000, // max non-offload body size
+    );
 
-// or use a helper function `offloading_client(&aws_config, "my-bucket".to_owned(), 25000)`
-let sns_client = aws_sdk_sns::Client::from_conf(
-    SnsConfig::new(&aws_config)
-        .to_builder()
-        // Set offloading interceptor
-        .interceptor(sns_s3_offload_interceptor)
-        .build(),
-);
+    // or use a helper function `offloading_client(&aws_config, "my-bucket".to_owned(), 25000)`
+    let sns_client = aws_sdk_sns::Client::from_conf(
+        SnsConfig::new(&aws_config)
+            .to_builder()
+            // Set offloading interceptor
+            .interceptor(sns_s3_offload_interceptor)
+            .build(),
+    );
 
-// Use AWS SDK as usual
-let _publish_res = sns_client
-    .publish()
-    .topic_arn("TEST-TOPIC".to_owned())
-    .set_message(Some("TEST BODY".to_owned()))
-    .send()
-    .await
-    .unwrap();
+    // Send SNS using AWS SDK as usual
+    let _publish_res = sns_client
+        .publish()
+        .topic_arn("TEST-TOPIC".to_owned())
+        .set_message(Some("TEST BODY".to_owned()))
+        .send()
+        .await
+        .unwrap();
 
-...
+    // Prepare sqs client
+    let sqs_offloading_client =
+        offload::sqs::offloading_client(&aws_config, "my-bucket", 25000);
 
-let sqs_offloading_client =
-    offload::sqs::offloading_client(&aws_config, "my-bucket".to_owned(), 25000);
-
-let r = sqs_offloading_client
-    .receive_message()
-    .queue_url(&test_queue_url)
-    .send()
-    .await
-    .unwrap();
+    // Receive SQS using AWS SDK as usual
+    let _sqs_receive = sqs_offloading_client
+        .receive_message()
+        .queue_url("TEST-QUEUE")
+        .send()
+        .await
+        .unwrap();
+}
 ```
 
-Alternatively you can download offloaded body manually like this:
+Alternatively you can download offloaded bodies manually like this:
 ```rust
 use payload_offloading_for_aws::offload;
 
-let payload = "...";
+async fn download_offloaded_payload_explicitly() -> Result<(), String> {
+    let aws_config = aws_config::defaults(aws_config::BehaviorVersion::latest())
+        .load()
+        .await;
 
-// It's only `Some` when download was needed, failover to original payload
-let res = offload::sqs::try_downloading_body(s3_client, payload)?
-  .unwrap_or(payload);
+    let s3_client = aws_sdk_s3::Client::from_conf(
+        aws_sdk_s3::Config::from(&aws_config)
+            .to_builder()
+            .force_path_style(true)
+            .build(),
+    );
+
+    let raw_payload = r#"[
+        "software.amazon.payloadoffloading.PayloadS3Pointer",
+        {
+            "s3BucketName": "offloading-bucket",
+            "s3Key": "9cc30888-0e2e-40da-b594-c9ca2cd58722"
+        }
+    ]"#;
+
+    // It's only `Some` when download was needed, failover to original payload
+    let res = offload::sqs::try_downloading_body(&s3_client, raw_payload)
+        .map_err(|e| e.to_string())?
+        .unwrap_or(raw_payload.to_owned());
+
+    Ok(())
+}
 ```
 
 ### Additional info & references
