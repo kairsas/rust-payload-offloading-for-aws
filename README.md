@@ -60,7 +60,7 @@ async fn send_sns_and_receive_sqs() {
         .await
         .unwrap();
 
-    // Prepare sqs client
+    // Another option to setup AWS client
     let sqs_client = offload::sqs::offloading_client(&aws_config, "my-bucket", 25000);
 
     // Receive message from SQS using the AWS SDK as usual.
