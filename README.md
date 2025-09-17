@@ -100,7 +100,7 @@ async fn download_offloaded_payload_explicitly() -> Result<(), String> {
     ]"#;
 
     // It's only `Some` when download was needed, failover to original payload
-    let res = offaload::sqs::try_downloading_body(&s3_client, raw_payload)
+    let res = offload::sqs::try_downloading_body(&s3_client, raw_payload)
         .map_err(|e| e.to_string())?
         .unwrap_or(raw_payload.to_owned());
 
