@@ -1,5 +1,11 @@
 # payload-offloading-for-aws
 
+[![Crates.io][crates-badge]][crates-url]
+[![Build Status](https://github.com/kairsas/rust-payload-offloading-for-aws/actions/workflows/ci.yml/badge.svg)](https://github.com/kairsas/rust-payload-offloading-for-aws/actions/workflows/ci.yml)
+
+[crates-badge]: https://img.shields.io/crates/v/payload-offloading-for-aws.svg
+[crates-url]: https://img.shields.io/crates/v/payload-offloading-for-aws.svg
+
 Large Payload offloading to S3, compatible with existing AWS Java libraries.
 
 When sending or receiving via SNS/SQS, large message payloads will be offloaded to or download from S3 in this format:
@@ -115,3 +121,20 @@ async fn download_offloaded_payload_explicitly() -> Result<(), String> {
 AWS SDK interceptor examples:
   * [Replaying body](https://github.com/awslabs/aws-sdk-rust/blob/505dab66bf0801ca743212678d47d6490d2beba9/sdk/aws-smithy-runtime/src/client/http/test_util/dvr/replay.rs#L338)
   * [Compressing body](https://github.com/awslabs/aws-sdk-rust/blob/505dab66bf0801ca743212678d47d6490d2beba9/sdk/cloudwatch/src/client_request_compression.rs#L138)
+
+### License
+
+Licensed under either of
+
+ - MIT license ([LICENSE-MIT](LICENSE-MIT) or
+   http://opensource.org/licenses/MIT)
+ - Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or
+   http://www.apache.org/licenses/LICENSE-2.0)
+
+at your option.
+
+#### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in
+time by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any
+additional terms or conditions.
