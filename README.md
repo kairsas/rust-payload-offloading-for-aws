@@ -4,7 +4,7 @@
 [![Build Status][ci-badge]][ci-url]
 
 [crates-badge]: https://img.shields.io/crates/v/payload-offloading-for-aws.svg
-[crates-url]: https://img.shields.io/crates/v/payload-offloading-for-aws.svg
+[crates-url]: https://crates.io/crates/payload-offloading-for-aws
 [ci-badge]: https://github.com/kairsas/rust-payload-offloading-for-aws/workflows/CI/badge.svg?branch=main
 [ci-url]: https://github.com/kairsas/rust-payload-offloading-for-aws/actions?query=workflow%3ACI+branch%3Amain
 
