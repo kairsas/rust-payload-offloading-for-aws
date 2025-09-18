@@ -1,10 +1,12 @@
 # payload-offloading-for-aws
 
 [![Crates.io][crates-badge]][crates-url]
-[![Build Status](https://github.com/kairsas/rust-payload-offloading-for-aws/actions/workflows/ci.yml/badge.svg)](https://github.com/kairsas/rust-payload-offloading-for-aws/actions/workflows/ci.yml)
+[![Build Status](ci-badge)](ci-url)
 
 [crates-badge]: https://img.shields.io/crates/v/payload-offloading-for-aws.svg
 [crates-url]: https://img.shields.io/crates/v/payload-offloading-for-aws.svg
+[ci-badge]: https://github.com/kairsas/rust-payload-offloading-for-aws/actions/workflows/ci.yml/badge.svg?branch=main
+[ci-url]: https://github.com/kairsas/rust-payload-offloading-for-aws/actions/workflows/ci.yml
 
 Large Payload offloading to S3, compatible with existing AWS Java libraries.
 
