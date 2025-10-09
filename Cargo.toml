@@ -32,7 +32,7 @@ uuid = { version = "1.11.0", features = ["v4"] }
 
 [dev-dependencies]
 aws-sdk-sqs = { version = "1.47.0", features = ["test-util"] }
-ctor = "0.5.0"
+ctor = "0.6.0"
 testcontainers = { version = "0.25.0" }
 testcontainers-modules = { version = "0.13.0", features = ["localstack"], default-features = false }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
