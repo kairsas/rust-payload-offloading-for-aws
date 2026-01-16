@@ -25,13 +25,13 @@ pub struct S3OffloadInterceptor<Idp: IdProvider> {
 
 impl<Idp: IdProvider + Sync + Send + std::fmt::Debug> S3OffloadInterceptor<Idp> {
     pub fn new(
-        aws_config: &SdkConfig,
+        s3_client: S3Client,
         id_provider: Idp,
         bucket_name: String,
         max_body_size: usize,
     ) -> Self {
         S3OffloadInterceptor {
-            s3_client: s3_client(aws_config),
+            s3_client,
             id_provider,
             bucket_name,
             max_body_size,
@@ -180,8 +180,9 @@ pub fn offloading_client(
     offloading_bucket: &str,
     max_non_offloaded_size: usize,
 ) -> SnsClient {
+    let s3_client = s3_client(aws_config);
     let s3_offload_interceptor = S3OffloadInterceptor::new(
-        aws_config,
+        s3_client,
         RandomUuidProvider::default(),
         offloading_bucket.to_owned(),
         max_non_offloaded_size,
@@ -319,8 +320,9 @@ mod tests {
         let base_endpoint_url = &mock_server.uri();
 
         info!("Base endpoint url: {}", base_endpoint_url);
+        let s3_test_client = s3_client(&s3_config(base_endpoint_url).await);
         let s3_offload_interceptor = S3OffloadInterceptor::new(
-            &s3_config(base_endpoint_url).await,
+            &s3_test_client,
             FixedIdsProvider::new(vec![TEST_RANDOM_ID]),
             TEST_BUCKET.to_owned(),
             max_non_offload_size,

@@ -1,12 +1,12 @@
 [package]
 name = "payload-offloading-for-aws"
-version = "0.1.3"
+version = "1.0.0"
 edition = "2021"
 rust-version = "1.86"
 readme = "README.md"
 description = "Large Payload offloading for AWS."
 keywords = ["aws", "payload", "offloading", "s3"]
-repository = "https://github.com/kairsas/rust-payload-offloading-for-aws"
+repository = "https://github.com/worldcoin/rust-payload-offloading-for-aws"
 license = "MIT OR Apache-2.0"
 
 [features]
